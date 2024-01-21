@@ -1,5 +1,5 @@
 ##Objective:
-#Perform Linear Regression Analysis to find variables most influential to the happiness of citizens worldwide
+#Perform Multiple Linear Regression Analysis to find variables most influential to the happiness of citizens worldwide
 
 
 ##Dataset from:
