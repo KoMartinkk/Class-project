@@ -29,13 +29,13 @@ des
 gen lshare =   Compensation_of_employees/Gross_value_added_of_corporate_b
 line lshare year
 
-#
+# Using Investment in Private Fixed IPP assets data to make a time-series plot  
 
 import excel IPP_data_for_question2, sheet(Sheet1) firstrow clear
 
 line IPP_C year
 
-#
+# Using BEA-NIPA data to replicate the graph on IPP data
 
 import excel NIPA_1_14, sheet(Sheet1) firstrow clear
 destring year, replace 
@@ -53,7 +53,8 @@ gen lshare = Compensation_of_employees/Gross_value_added_of_corporate_b
 line lshare oldLshare year
 
 
-#
+# Using BEA-NIPA table 2.3.5 to make a time-series plot for natural log of food consumption per capita, nondurable consumption per capita,
+ durable consumption per capita, and housing service per capita respectively from 1967 to 2019
 
 import excel NIPA2_3_5, sheet(Sheet1) firstrow clear
 destring year, replace 
