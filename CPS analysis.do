@@ -1,4 +1,3 @@
-
 use cps_sample_Q1.dta,clear
 gen earning = salary + 2*busfarm/3
 gen real_earnings = earning/pcedef 
