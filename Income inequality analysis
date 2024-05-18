@@ -1,0 +1,80 @@
+use hsv_sample.dta, clear
+
+I.a)
+
+keep if year >= 1978 & year <= 1980
+gen log_postgov = log(postgovinc)
+gen log_pregov = log(pregovinc)
+reg log_postgov log_pregov 
+gen k1_1 = 1 - _b[log_pregov]
+display k1_1
+
+use hsv_sample.dta, clear
+
+keep if year >= 2016 & year <= 2018
+reg log_postgov log_pregov 
+gen k1_2 = 1 - _b[log_pregov]
+display k1_2
+
+b)
+
+use hsv_sample.dta, clear
+
+gen log_postgov = log(postgovinc)
+gen log_pregov = log(pregovinc)
+save temp.dta, replace
+statsby, by(year entre): reg log_postgov log_pregov
+
+%browse
+
+gen kappa1 = 1-_b_log_pregov
+gen kappa0 = 1- exp(_b_cons)
+
+drop _b*
+reshape wide kappa*,i(year) j(entre)
+
+line kappa10 year || line kappa11 year
+
+
+
+II.
+
+clear
+use cps_sample_Q1.dta
+
+gen earnings = salary + busfarm
+gen earnings_real = earnings / pcedef
+keep if age >= 25 & age <= 60
+keep if sex == 1
+save male_cps_sample.dta, replace
+
+1)
+
+gen ln_real_earnings = ln(earnings_real)
+collapse (sd) sd_ln_real_earnings = ln_real_earnings [weight = asecwth], by(year)
+gen variance_ln_earnings = sd_ln_real_earnings^2
+list year variance_ln_earnings if year == 2009
+
+2)
+
+clear
+use male_cps_sample.dta
+
+
+collapse (p10) p10=earnings_real (p20) p20=earnings_real (p35) p35=earnings_real (p50) p50=earnings_real (p75) p75=earnings_real (p90) p90=earnings_real (p95) p95=earnings_real [weight = asecwth], by(year)
+
+gen logp20 = log(p20)
+gen logp35 = log(p35)
+gen logp50 = log(p50)
+gen logp75 = log(p75)
+gen logp90 = log(p90)
+gen logp95 = log(p95)
+gen p20_log_dev = logp20 - logp20[1]
+gen p35_log_dev = logp35 - logp35[1]
+gen p50_log_dev = logp50 - logp50[1]
+gen p75_log_dev = logp75 - logp75[1]
+gen p90_log_dev = logp90 - logp90[1]
+gen p95_log_dev = logp95 - logp95[1]
+
+
+line p20_log_dev p35_log_dev p50_log_dev p75_log_dev p90_log_dev p95_log_dev year
